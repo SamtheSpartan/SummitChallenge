@@ -3,38 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 public class CarController : MonoBehaviour
 {
-    public GhostCarController ghostCar;
     public float maxSpeed;
     public float distance;
-    float angle;
-    float angleSign;
-    float angleAllowance = 0.1f;
+    public float angle;
+    public float angleSign;
+    public float angleAllowance = 0.1f;
     public float minDistance = 2f;
+    public GameObject[] waypoints;
     public int waypoint = 0;
+    public float rotateSpeed;
 
-    // Use this for initialization
     void Start ()
     {
     }
 
-    // Update is called once per frame
     void Update ()
     {
-        //distance = Vector3.Distance(ghostCar.transform.position, transform.position);
-        //angle = Vector3.Angle(transform.forward, ghostCar.transform.position - transform.position);
-        //float local = transform.InverseTransformPoint(ghostCar.transform.position).z;
-        ////looks like z axis is going to be the check
-        //angleSign = angle * local;
-        //AdjustMovement();
-
-        distance = Vector3.Distance(ghostCar.waypoints[waypoint], transform.position);
-        angle = Vector3.Angle(transform.forward, ghostCar.waypoints[waypoint] - transform.position);
-        float local = transform.InverseTransformPoint(ghostCar.waypoints[waypoint]).z;
+        distance = Vector3.Distance(waypoints[waypoint].transform.position, transform.position);
+        angle = Vector3.Angle(transform.forward, waypoints[waypoint].transform.position - transform.position);
+        float local = transform.InverseTransformPoint(waypoints[waypoint].transform.position).z;
         //looks like z axis is going to be the check
         angleSign = angle * local;
         
         AdjustMovement();
-        if (Vector3.Distance(ghostCar.waypoints[waypoint], transform.position) <= 0.5f)
+        if (distance <= minDistance)
         {
             waypoint++;
         }
@@ -49,29 +41,26 @@ public class CarController : MonoBehaviour
         {
             TurnLeft(angleSign);
         }
-        if(distance < minDistance)
+        if(distance > minDistance)
         {
             GoForward(distance);
         }
-        //if(distance >= minDistance)
-        //{
-        //    GoBackward(distance);
-        //}
+        
     }
     void TurnLeft(float dist)
     {
-        transform.Rotate(0, dist * Time.deltaTime, 0);
+        transform.Rotate(0, dist * Time.deltaTime * rotateSpeed, 0);
     }
     void TurnRight(float dist)
     {
-        transform.Rotate(0, dist * Time.deltaTime, 0);
+        transform.Rotate(0, dist * Time.deltaTime * rotateSpeed, 0);
     }
     void GoForward(float dist)
     {
-        transform.Translate(transform.forward * Time.deltaTime);
+        transform.Translate(transform.forward * Time.deltaTime * maxSpeed);
     }
     void GoBackward(float dist)
     {
-        transform.Translate(-transform.forward * Time.deltaTime);
+        transform.Translate(-transform.forward * Time.deltaTime * maxSpeed);
     }
 }
