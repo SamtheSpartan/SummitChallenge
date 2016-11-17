@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
     public float radius = 0;
 
     private Vector3 spawnPosition;
+    private Vector3 direction;
+    Transform player;
 
 
     void Start ()
@@ -15,7 +17,8 @@ public class EnemyManager : MonoBehaviour
         
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
         radius = Random.Range(2, 4);
-           
+        player = GameObject.FindGameObjectWithTag("car").transform;
+
     }
 
 
@@ -25,12 +28,12 @@ public class EnemyManager : MonoBehaviour
         //{
           //  return;
         //}
-
-        int spawnPointIndex = Random.Range (0, spawnPoints.Length);
+        
         spawnPosition = new Vector3(Random.insideUnitSphere.x * radius,
                                    transform.position.y + Random.Range(-0.5f, 0.5f), Random.insideUnitSphere.z * radius);
 
+        direction = player.position - transform.position;
         //Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
-        Instantiate (enemy, spawnPosition, spawnPoints[spawnPointIndex].rotation);
+        Instantiate (enemy, spawnPosition, Quaternion.LookRotation(direction));
     }
 }
