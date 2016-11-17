@@ -13,12 +13,16 @@ public class CarController : MonoBehaviour
     public float minDistance = 2f;
     public GameObject[] waypoints;
     public int waypoint = 0;
-    public enum NavState { SETUP, PATHFINDING, ORIENTING, STOPPED, WAYPOINTPAUSE}
+    public enum NavState { SETUP, PATHFINDING, ORIENTING, STOPPED, WAYPOINTPAUSE, ATTACKED, REVERSE}
     public NavState navState = NavState.SETUP;
     private bool gameOver;
-    private float stopCarTimer = 3f;
+    private float stopCarTimer = 2f;
     private float waypointPauseTimer = 1f;
     public bool isDebugMode;
+    public GameObject[] wallCheckers;
+    public float reverseTimer = 0.75f;
+    public Rigidbody mario;
+    public Transform endPoint;
     void Start ()
     {
         StartCoroutine(WebCall("stop"));
@@ -33,6 +37,8 @@ public class CarController : MonoBehaviour
             waypoint++;
             if(waypoint == waypoints.Length)
             {
+                mario.gameObject.transform.parent = null;
+                LaunchMario(mario, endPoint, 3f);
                 navState = NavState.STOPPED;
             }
             else
@@ -68,6 +74,17 @@ public class CarController : MonoBehaviour
                 {
                     navState = NavState.ORIENTING;
                 }
+                for (int i = 0; i < wallCheckers.Length; i++)
+                {
+                    RaycastHit hit;
+                    if(Physics.Raycast(wallCheckers[i].transform.position, wallCheckers[i].transform.forward, out hit, 0.1f))
+                    {
+                        if(hit.collider != null)
+                        {
+                            navState = NavState.REVERSE;
+                        }
+                    }
+                }
                 break;
             case NavState.ORIENTING:
                 
@@ -87,6 +104,23 @@ public class CarController : MonoBehaviour
                     waypointPauseTimer = 1f;
                     navState = NavState.PATHFINDING;
                 }
+                break;
+            case NavState.ATTACKED:
+                stopCarTimer -= Time.deltaTime;
+                if(stopCarTimer <= 0)
+                {
+                    stopCarTimer = 2f;
+                    navState = NavState.PATHFINDING;
+                }
+                break;
+            case NavState.REVERSE:
+                reverseTimer -= Time.deltaTime;
+                if(reverseTimer <= 0)
+                {
+                    reverseTimer = 0.75f;
+                    navState = NavState.ORIENTING;
+                }
+                GoBackward();
                 break;
         }
     }
@@ -136,8 +170,8 @@ public class CarController : MonoBehaviour
     }
     public void StopCar()
     {
-        navState = NavState.STOPPED;
-        stopCarTimer = 3f;
+        navState = NavState.ATTACKED;
+        stopCarTimer = 2f;
     }
     IEnumerator WebCall(string url)
     {
@@ -145,5 +179,26 @@ public class CarController : MonoBehaviour
         yield return www;
         //Renderer renderer = GetComponent<Renderer>();
         //renderer.material.mainTexture = www.texture;
+    }
+    void LaunchMario(Rigidbody mario, Transform target, float maxHeight)
+    {
+        mario.transform.parent = null;
+        Vector3 deltaPos = target.position - mario.transform.position;
+        float h0 = deltaPos.y + maxHeight;  //max height in parabolic arc
+        float h1 = maxHeight;       //height dropped from peak
+        if (h0 < 0)
+        {
+            h0 = 0;
+            h1 = mario.transform.position.y - target.position.y;
+        }
+        float g = -Physics.gravity.y;
+        Vector3 deltaPosXZ = new Vector3(deltaPos.x, 0, deltaPos.z);
+        float distanceXZ = Mathf.Abs(deltaPosXZ.magnitude); //distance along ground
+        float v0y = Mathf.Sqrt(2 * g * h0); //y velocity needed to reach peak of arc
+        float sec = Mathf.Sqrt(2 * h0 / g) + Mathf.Sqrt(2 * h1 / g); //seconds spent in air
+        float v0xz = distanceXZ / sec; //velocity in the x and z direction
+
+        mario.isKinematic = false;
+        mario.velocity = deltaPosXZ.normalized * v0xz + Vector3.up * v0y;
     }
 }

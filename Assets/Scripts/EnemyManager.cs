@@ -21,6 +21,10 @@ public class EnemyManager : MonoBehaviour
     }
     void Update()
     {
+        if(player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Car").transform;
+        }
         if (canSpawn)
         {
             InvokeRepeating("Spawn", spawnTime, spawnTime);
@@ -37,9 +41,12 @@ public class EnemyManager : MonoBehaviour
         
         spawnPosition = new Vector3(Random.insideUnitSphere.x * radius,
                                    transform.position.y + Random.Range(-0.5f, 0.5f), Random.insideUnitSphere.z * radius);
-
-        direction = player.position - transform.position;
-        //Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
-        Instantiate (enemy, spawnPosition, Quaternion.LookRotation(direction));
+        if(player != null)
+        {
+            direction = player.position - transform.position;
+            //Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+            Instantiate(enemy, spawnPosition, Quaternion.LookRotation(direction));
+        }
+        
     }
 }
