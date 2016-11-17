@@ -10,17 +10,23 @@ public class EnemyManager : MonoBehaviour
     private Vector3 spawnPosition;
     private Vector3 direction;
     Transform player;
-
+    public bool canSpawn;
 
     void Start ()
     {
         
-        InvokeRepeating ("Spawn", spawnTime, spawnTime);
         radius = Random.Range(2, 4);
         player = GameObject.FindGameObjectWithTag("Car").transform;
 
     }
-
+    void Update()
+    {
+        if (canSpawn)
+        {
+            InvokeRepeating("Spawn", spawnTime, spawnTime);
+            canSpawn = false;
+        }
+    }
 
     void Spawn ()
     {
