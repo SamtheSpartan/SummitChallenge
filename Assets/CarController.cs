@@ -15,6 +15,8 @@ public class CarController : MonoBehaviour
     public int waypoint = 0;
     public enum NavState { PATHFINDING, ORIENTING, STOPPED}
     public NavState navState = NavState.PATHFINDING;
+    private bool gameOver;
+    private float stopCarTimer = 3f;
     void Start ()
     {
     }
@@ -89,5 +91,10 @@ public class CarController : MonoBehaviour
     void GoBackward()
     {
         transform.Translate(-transform.forward * Time.deltaTime * maxSpeed);
+    }
+    public void StopCar()
+    {
+        navState = NavState.STOPPED;
+        stopCarTimer = 3f;
     }
 }
