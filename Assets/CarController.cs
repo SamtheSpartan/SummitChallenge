@@ -30,12 +30,14 @@ public class CarController : MonoBehaviour
             }
         }
         //Determine nav data
-        distance = Vector3.Distance(waypoints[waypoint].transform.position, transform.position);
-        angle = Vector3.Angle(this.transform.forward, waypoints[waypoint].transform.position - transform.position);
-        float local = Mathf.Sign(transform.InverseTransformPoint(waypoints[waypoint].transform.position).x);
-        Debug.Log(local);
-        //looks like z axis is going to be the check
-        angleSign = angle * local;
+        if(navState != NavState.STOPPED)
+        {
+            distance = Vector3.Distance(waypoints[waypoint].transform.position, transform.position);
+            angle = Vector3.Angle(this.transform.forward, waypoints[waypoint].transform.position - transform.position);
+            float local = Mathf.Sign(transform.InverseTransformPoint(waypoints[waypoint].transform.position).x);
+            angleSign = angle * local;
+        }
+        
         
         
         switch (navState)
@@ -46,7 +48,7 @@ public class CarController : MonoBehaviour
                     GoForward();
                 }
                
-                Turn(angleSign);
+                //Turn(angleSign);
                 if(angle > stopToOrientAngle)
                 {
                     navState = NavState.ORIENTING;
@@ -54,7 +56,7 @@ public class CarController : MonoBehaviour
                 break;
             case NavState.ORIENTING:
                 
-                Turn(-angleSign);
+                Turn(angleSign);
                 if(angle <= angleAllowance)
                 {
                     navState = NavState.PATHFINDING;
