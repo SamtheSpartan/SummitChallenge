@@ -31,13 +31,13 @@ public class CarController : MonoBehaviour
 
     void Update ()
     {
-        if(Application.isEditor)
-        {
-            if(Input.GetKeyDown(KeyCode.J))
+        //if(Application.isEditor)
+        //{
+            if(Input.GetKeyDown(KeyCode.PageDown))
             {
                 LaunchMario(mario, endPoint.transform, 3f);
             }
-        }
+        //}
         //check waypoint distance
         if (distance <= minDistance && waypoint < waypoints.Length - 1)
         {

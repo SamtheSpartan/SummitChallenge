@@ -14,7 +14,7 @@ public class LaserHead : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown))
+	    if(Input.GetKeyDown(KeyCode.PageUp))// || Input.GetKeyDown(KeyCode.PageDown))
         {
             Shoot();
         }
