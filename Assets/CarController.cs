@@ -22,7 +22,7 @@ public class CarController : MonoBehaviour
     public GameObject[] wallCheckers;
     public float reverseTimer = 0.75f;
     public Rigidbody mario;
-    public Transform endPoint;
+    public GameObject endPoint;
     void Start ()
     {
         StartCoroutine(WebCall("stop"));
@@ -31,14 +31,20 @@ public class CarController : MonoBehaviour
 
     void Update ()
     {
+        if(Application.isEditor)
+        {
+            if(Input.GetKeyDown(KeyCode.J))
+            {
+                LaunchMario(mario, endPoint.transform, 3f);
+            }
+        }
         //check waypoint distance
         if (distance <= minDistance && waypoint < waypoints.Length - 1)
         {
             waypoint++;
             if(waypoint == waypoints.Length)
             {
-                mario.gameObject.transform.parent = null;
-                LaunchMario(mario, endPoint, 3f);
+                LaunchMario(mario, endPoint.transform, 3f);
                 navState = NavState.STOPPED;
             }
             else
