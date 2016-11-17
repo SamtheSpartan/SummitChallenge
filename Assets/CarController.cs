@@ -13,8 +13,8 @@ public class CarController : MonoBehaviour
     public float minDistance = 2f;
     public GameObject[] waypoints;
     public int waypoint = 0;
-    public enum NavState { PATHFINDING, ORIENTING, STOPPED}
-    public NavState navState = NavState.PATHFINDING;
+    public enum NavState { SETUP, PATHFINDING, ORIENTING, STOPPED}
+    public NavState navState = NavState.SETUP;
     private bool gameOver;
     private float stopCarTimer = 3f;
     void Start ()
@@ -23,6 +23,7 @@ public class CarController : MonoBehaviour
 
     void Update ()
     {
+        //check waypoint distance
         if (distance <= minDistance && waypoint < waypoints.Length - 1)
         {
             waypoint++;
@@ -44,6 +45,9 @@ public class CarController : MonoBehaviour
         
         switch (navState)
         {
+            case NavState.SETUP:
+
+                break;
             case NavState.PATHFINDING:
                 if (distance > minDistance)
                 {
