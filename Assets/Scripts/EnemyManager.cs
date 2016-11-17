@@ -17,7 +17,7 @@ public class EnemyManager : MonoBehaviour
         
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
         radius = Random.Range(2, 4);
-        player = GameObject.FindGameObjectWithTag("car").transform;
+        player = GameObject.FindGameObjectWithTag("Car").transform;
 
     }
 
