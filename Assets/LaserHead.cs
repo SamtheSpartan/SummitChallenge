@@ -25,6 +25,8 @@ public class LaserHead : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit))
         {
+            Debug.Log(hit.collider.gameObject.name);
+
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 //Do enemy logic here

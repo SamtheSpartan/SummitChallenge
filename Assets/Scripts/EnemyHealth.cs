@@ -34,6 +34,13 @@ public class EnemyHealth : MonoBehaviour
         {
             transform.Translate (-Vector3.up * sinkSpeed * Time.deltaTime);
         }
+        //if(Application.isEditor)
+        //{
+        //    if(Input.GetKeyDown(KeyCode.K))
+        //    {
+        //        TakeDamage(50, transform.position);
+        //    }
+        //}
     }
 
 
@@ -42,12 +49,12 @@ public class EnemyHealth : MonoBehaviour
         if(isDead)
             return;
 
-        enemyAudio.Play ();
+        //enemyAudio.Play ();
 
         currentHealth -= amount;
             
-        hitParticles.transform.position = hitPoint;
-        hitParticles.Play();
+        //hitParticles.transform.position = hitPoint;
+        //hitParticles.Play();
 
         if(currentHealth <= 0)
         {
@@ -60,12 +67,13 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
 
-        capsuleCollider.isTrigger = true;
+        //capsuleCollider.isTrigger = true;
 
-        anim.SetTrigger ("Dead");
+        //anim.SetTrigger ("Dead");
 
-        enemyAudio.clip = deathClip;
-        enemyAudio.Play ();
+        //enemyAudio.clip = deathClip;
+        //enemyAudio.Play ();
+        Destroy(this.gameObject);
     }
 
 

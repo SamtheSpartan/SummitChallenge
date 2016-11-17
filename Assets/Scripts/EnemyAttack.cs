@@ -26,7 +26,7 @@ public class EnemyAttack : MonoBehaviour
 
     void OnTriggerEnter (Collider other)
     {
-        if(other.gameObject == player)
+        if(other.gameObject.tag == "Car")
         {
             playerInRange = true;
         }
@@ -45,13 +45,19 @@ public class EnemyAttack : MonoBehaviour
     void Update ()
     {
         timer += Time.deltaTime;
-
-        if(timer >= timeBetweenAttacks && playerInRange/* && enemyHealth.currentHealth > 0*/)
+        if(Vector3.Distance(transform.position, player.transform.position) < 0.3f)
         {
-            Attack ();
+            Attack();
         }
+        //if(timer >= timeBetweenAttacks && playerInRange/* && enemyHealth.currentHealth > 0*/)
+        //{
+        //    Attack ();
+        //}
+        //if (playerInRange/* && enemyHealth.currentHealth > 0*/)
+        //{
+        //}
 
-        if(playerHealth <= 0)
+        if (playerHealth <= 0)
         {
             anim.SetTrigger ("PlayerDead");
         }
@@ -62,9 +68,10 @@ public class EnemyAttack : MonoBehaviour
     {
         timer = 0f;
 
-        if(playerHealth > 0)
-        {
-            //playerHealth.TakeDamage (attackDamage);
-        }
+
+        Debug.Log("Attack");
+                  
+        player.GetComponent<CarController>().StopCar();
+        
     }
 }

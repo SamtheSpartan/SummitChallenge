@@ -7,7 +7,7 @@ public class EnemyMovement : MonoBehaviour
     //PlayerHealth playerHealth;
     //EnemyHealth enemyHealth;
 
-    float speed = 0.050f;
+    float speed = 0.25f;
     float turnSpeed = 1.050f;
     private Vector3 direction;
 
@@ -15,6 +15,7 @@ public class EnemyMovement : MonoBehaviour
     void Awake ()
     {
         player = GameObject.FindGameObjectWithTag ("Car").transform;
+        speed = Random.Range(0.25f, 0.75f);
         //playerHealth = player.GetComponent <PlayerHealth> ();
         //enemyHealth = GetComponent <EnemyHealth> ();
         //nav = GetComponent <NavMeshAgent> ();

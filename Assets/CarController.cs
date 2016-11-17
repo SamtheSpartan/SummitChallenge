@@ -13,12 +13,16 @@ public class CarController : MonoBehaviour
     public float minDistance = 2f;
     public GameObject[] waypoints;
     public int waypoint = 0;
-    public enum NavState { SETUP, PATHFINDING, ORIENTING, STOPPED}
+    public enum NavState { SETUP, PATHFINDING, ORIENTING, STOPPED, WAYPOINTPAUSE}
     public NavState navState = NavState.SETUP;
     private bool gameOver;
     private float stopCarTimer = 3f;
+    private float waypointPauseTimer = 1f;
+    public bool isDebugMode;
     void Start ()
     {
+        StartCoroutine(WebCall("stop"));
+
     }
 
     void Update ()
@@ -30,6 +34,11 @@ public class CarController : MonoBehaviour
             if(waypoint == waypoints.Length)
             {
                 navState = NavState.STOPPED;
+            }
+            else
+            {
+                StartCoroutine(WebCall("stop"));
+                navState = NavState.WAYPOINTPAUSE;
             }
         }
         //Determine nav data
@@ -69,14 +78,34 @@ public class CarController : MonoBehaviour
                 }
                 break;
             case NavState.STOPPED:
-
+                StartCoroutine(WebCall("stop"));
+                break;
+            case NavState.WAYPOINTPAUSE:
+                waypointPauseTimer -= Time.deltaTime;
+                if(waypointPauseTimer <= 0)
+                {
+                    waypointPauseTimer = 1f;
+                    navState = NavState.PATHFINDING;
+                }
                 break;
         }
     }
   
     void Turn(float angle)
     {
-        transform.Rotate(0, angle * Time.deltaTime * rotateSpeed, 0);
+        if(isDebugMode)
+        {
+            transform.Rotate(0, angle * Time.deltaTime * rotateSpeed, 0);
+        }
+        
+        if(angle >= 0)
+        {
+            StartCoroutine(WebCall("right"));
+        }
+        else
+        {
+            StartCoroutine(WebCall("left"));
+        }
     }
     void TurnLeft(float dist)
     {
@@ -90,15 +119,31 @@ public class CarController : MonoBehaviour
     }
     void GoForward()
     {
-        transform.position = transform.position + transform.forward * maxSpeed * Time.deltaTime * (distance + 0.5f);
+        if (isDebugMode)
+        {
+            transform.position = transform.position + transform.forward * maxSpeed * Time.deltaTime * (distance + 0.5f);
+        }
+        StartCoroutine(WebCall("forward"));
     }
     void GoBackward()
     {
-        transform.Translate(-transform.forward * Time.deltaTime * maxSpeed);
+        if (isDebugMode)
+        {
+            transform.Translate(-transform.forward * Time.deltaTime * maxSpeed);
+        }
+        StartCoroutine(WebCall("reverse"));
+
     }
     public void StopCar()
     {
         navState = NavState.STOPPED;
         stopCarTimer = 3f;
+    }
+    IEnumerator WebCall(string url)
+    {
+        WWW www = new WWW("http://172.20.120.236/" + url);
+        yield return www;
+        //Renderer renderer = GetComponent<Renderer>();
+        //renderer.material.mainTexture = www.texture;
     }
 }
