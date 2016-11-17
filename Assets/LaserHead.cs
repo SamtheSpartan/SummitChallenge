@@ -11,7 +11,7 @@ public class LaserHead : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Input.GetKeyDown(KeyCode.Space))
+	    if(Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown))
         {
             shotParticles.Play();
             RaycastHit hit;
@@ -19,7 +19,7 @@ public class LaserHead : MonoBehaviour {
             {
                 if(hit.collider.gameObject.tag == "Enemy")
                 {
-
+                    //Do enemy logic here
                 }
             }
         }
