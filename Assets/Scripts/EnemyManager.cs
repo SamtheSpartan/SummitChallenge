@@ -5,7 +5,6 @@ public class EnemyManager : MonoBehaviour
     //public PlayerHealth playerHealth;
     public GameObject enemy;
     public float spawnTime = 3f;
-    public Transform[] spawnPoints;
     public float radius = 0;
 
     private Vector3 spawnPosition;
@@ -13,10 +12,11 @@ public class EnemyManager : MonoBehaviour
 
     void Start ()
     {
+        
         InvokeRepeating ("Spawn", spawnTime, spawnTime);
         radius = Random.Range(2, 4);
            
-           }
+    }
 
 
     void Spawn ()
