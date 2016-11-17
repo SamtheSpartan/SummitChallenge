@@ -1,32 +1,33 @@
 fileFormatVersion: 2
-guid: 1843df75e4fc38e4391a7d6bf537e63f
-timeCreated: 1479348928
+guid: f5ff5adf7e96c1d4fb965122bc119f9d
+timeCreated: 1479357905
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Batmobil
-    100002: Batmobil_Hinterreifen
-    100004: Batmobil_Schubduesen
-    100006: Batmobil_Vorderreifen
-    100008: //RootNode
-    400000: Batmobil
-    400002: Batmobil_Hinterreifen
-    400004: Batmobil_Schubduesen
-    400006: Batmobil_Vorderreifen
-    400008: //RootNode
-    2300000: Batmobil
-    2300002: Batmobil_Hinterreifen
-    2300004: Batmobil_Schubduesen
-    2300006: Batmobil_Vorderreifen
-    3300000: Batmobil
-    3300002: Batmobil_Hinterreifen
-    3300004: Batmobil_Schubduesen
-    3300006: Batmobil_Vorderreifen
-    4300000: Batmobil
-    4300002: Batmobil_Hinterreifen
-    4300004: Batmobil_Schubduesen
-    4300006: Batmobil_Vorderreifen
+    100000: //RootNode
+    100002: Pillar
+    100004: transform109
+    100006: transform110
+    100008: transform111
+    100010: transform112
+    100012: Wall_End1
+    100014: Wall_End2
+    100016: Wall_End3
+    100018: Wall_End4
+    400000: //RootNode
+    400002: Pillar
+    400004: transform109
+    400006: transform110
+    400008: transform111
+    400010: transform112
+    400012: Wall_End1
+    400014: Wall_End2
+    400016: Wall_End3
+    400018: Wall_End4
+    2300000: Pillar
+    3300000: Pillar
+    4300000: Pillar
   materials:
     importMaterials: 1
     materialName: 0
@@ -51,7 +52,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.01
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
